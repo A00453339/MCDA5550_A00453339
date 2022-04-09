@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,9 +58,11 @@ public class HotelGuestDetailsFragment extends Fragment {
         checkIn = getArguments().getString("check-in date");
         checkOut = getArguments().getString("check-out date");
         guestName = getArguments().getString("guest name");
-
-        roomNumber = Math.round(guestNumber/2);
-
+        if (guestNumber==1){
+            roomNumber=1;        }
+        else{
+            roomNumber = Math.round(guestNumber/2);
+        }
         hotelRecapTextView.setText(guestName+",You have selected " + hotelName + ". The cost will be $ " + roomNumber * hotelPrice + " and availability is " + hotelAvailability);
         hotelRecapTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         hotelRecapTextView.setBackgroundColor(Color.CYAN);
@@ -97,16 +100,19 @@ public class HotelGuestDetailsFragment extends Fragment {
             {
                 // in this method we will get the response from API
                 bookingData = bookingdata;
-                //bookingData.get(0);
-
-
-                //obj.add();
-                //System.out.println("bookingdata is"+bookingData);
                 // display the message getting from web api
-                Toast.makeText(getActivity(), bookingData.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "Booking confirmed", Toast.LENGTH_LONG).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("name of guest", guestName);
 
-                //Toast.makeText(getActivity(), (CharSequence) bookingData.get(0),Toast.LENGTH_LONG).show();
+                BookingConfirmation bookingConfirmation = new BookingConfirmation();
+                bookingConfirmation.setArguments(bundle);
 
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_layout, bookingConfirmation);
+                fragmentTransaction.remove(HotelGuestDetailsFragment.this);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
 
             @Override

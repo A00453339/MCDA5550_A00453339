@@ -1,5 +1,7 @@
 package com.example.class_work;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public interface ApiInterface {
             @Field("check_out_date") String check_out_date,
             @Field("num_of_rooms") Integer num_of_rooms,
             @Field("num_of_guests") Integer num_of_guests,
-            @Field("guest_name") String guest_name, Callback<BookingData> callback);
+            @Field("guest_name") String guest_name,Callback<BookingData> callback);
 
     // API's endpoints
     @GET("/hotel_list")
